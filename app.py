@@ -84,13 +84,12 @@ def main():
 
 
     pinecone.init(api_key=st.secrets["pinecone_api_key"], environment='gcp-starter')
-    index = pinecone.Index('resume-chatbot')
+    vector_store = pinecone.Index('resume-chatbot')
     # Create embeddings
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", 
                                         model_kwargs={'device': 'cpu'})
 
-    # Create vector store
-    vector_store = FAISS.from_documents(index, embedding=embeddings)
+
 
     # Create the chain object
     chain = create_conversational_chain(vector_store)
